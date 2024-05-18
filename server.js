@@ -6,7 +6,7 @@ app.use(express.json());
 const currencyRoute = require("./routes/currency");
 const { runScheduler } = require("./schedulers/subscribers");
 
-app.use("/api/v1/currency", currencyRoute);
+app.use("/", currencyRoute);
 
 const port = process.env.PORT || 3000;
 

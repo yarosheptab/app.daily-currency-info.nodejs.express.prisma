@@ -12,7 +12,7 @@ const FormSchema = z.object({
         .email({ message: "Provide a valid email." }),
 });
 
-router.get("/today", async (req, res) => {
+router.get("/rate", async (req, res) => {
     try {
         const todayCurrencyRate = await getTodayCurrencyRate();
 
@@ -39,7 +39,7 @@ router.post("/subscribe", async (req, res) => {
 
         await createSubscriber(requestBody.email);
         res.status(HttpStatusCode.Ok).send({
-            message: "Thank you for subscribing!",
+            message: "E-mail додано",
         });
     } catch (error) {
         console.log(error);
