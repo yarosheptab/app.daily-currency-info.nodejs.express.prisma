@@ -2,7 +2,7 @@ const express = require("express");
 const { HttpStatusCode } = require("axios");
 const { getTodayCurrencyRate } = require("../controllers/currency");
 const { UNEXPECTED_ERROR_MESSAGE } = require("../utils/constants");
-const { createSubscriber } = require("../prisma/queries");
+const { createSubscriber, getSubscriberByEmail } = require("../prisma/queries");
 const { z } = require("zod");
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.get("/rate", async (req, res) => {
     try {
         const todayCurrencyRate = await getTodayCurrencyRate();
 
-        res.status(HttpStatusCode.Ok).send(todayCurrencyRate);
+        res.status(HttpStatusCode.Ok).send(todayCurrencyRate.buy);
     } catch (error) {
         console.log(error);
         res.status(HttpStatusCode.InternalServerError).send({
@@ -37,7 +37,16 @@ router.post("/subscribe", async (req, res) => {
             });
         }
 
+        const subs = await getSubscriberByEmail(requestBody.email);
+
+        if (subs.length) {
+            return res.status(HttpStatusCode.Conflict).send({
+                error: "Цей емейл вже підписаний",
+            });
+        }
+
         await createSubscriber(requestBody.email);
+
         res.status(HttpStatusCode.Ok).send({
             message: "E-mail додано",
         });

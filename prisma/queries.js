@@ -7,6 +7,13 @@ async function getSubscribers() {
     return allSubscribers;
 }
 
+async function getSubscriberByEmail(email) {
+    const subscriber = await prisma.subscriber.findMany({
+        where: { email },
+    });
+    return subscriber;
+}
+
 async function createSubscriber(email) {
     await prisma.subscriber.create({
         data: {
@@ -19,4 +26,4 @@ async function createSubscriber(email) {
     };
 }
 
-module.exports = { getSubscribers, createSubscriber };
+module.exports = { getSubscribers, createSubscriber, getSubscriberByEmail };
