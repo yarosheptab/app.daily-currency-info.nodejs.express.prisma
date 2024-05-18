@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 const currencyRoute = require("./routes/currency");
 
 app.use("/api/v1/currency", currencyRoute);
