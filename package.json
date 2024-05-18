@@ -11,5 +11,8 @@
         "url": "https://github.com/yarosheptab/app.daily-currency-info.nodejs.express.prisma.git"
     },
     "author": "",
-    "license": "ISC"
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.19.2"
+    }
 }
