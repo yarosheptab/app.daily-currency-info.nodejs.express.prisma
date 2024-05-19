@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+    db:
+        image: mysql:5.7
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-p$DB_PASSWORD"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        env_file: ./.env
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql_data:/var/lib/mysql
+        networks:
+            - backend
+    app:
+        build: .
+        ports:
+            - "3000:3000"
+        environment:
+            DB_HOST: db
+            DATABASE_URL: mysql://$DB_USER:$DB_PASSWORD@db:$DB_PORT/$DB_NAME
+        env_file: ./.env
+        depends_on:
+            db:
+                condition: service_healthy
+        networks:
+            - backend
+        command: bash -c "npm run migrate & npm run start"
+
+networks:
+    backend:
+
+volumes:
+    mysql_data:
