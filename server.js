@@ -9,7 +9,7 @@ const { runScheduler } = require("./schedulers/subscribers");
 
 app.use("/", currencyRoute);
 
-const port = process.env.PORT || 3000;
+const port = process.env.NODE_DOCKER_PORT || 8080;
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
